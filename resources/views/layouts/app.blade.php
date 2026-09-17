@@ -66,27 +66,27 @@
                         <small class="text-uppercase text-muted fw-bold ms-2">Menú Principal</small>
                         <ul class="nav flex-column mt-2">
                             <li class="nav-item mb-1">
-                                <a class="nav-link active bg-primary text-white rounded-3" href="{{ route('home') }}">
+                                <a class="nav-link {{ Route::is('home') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('home') }}">
                                     <i class="bi bi-speedometer2 me-2"></i>Dashboard
                                 </a>
                             </li>
                             <li class="nav-item mb-1">
-                                <a class="nav-link text-dark rounded-3" href="#">
+                                <a class="nav-link {{ Route::is('ciclos.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('ciclos.index') }}">
                                     <i class="bi bi-calendar-event me-2"></i>Ciclos Escolares
                                 </a>
                             </li>
                             <li class="nav-item mb-1">
-                                <a class="nav-link text-dark rounded-3" href="#">
+                                <a class="nav-link {{ Route::is('alumnos.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('alumnos.index') }}">
                                     <i class="bi bi-people me-2"></i>Alumnos & Grupos
                                 </a>
                             </li>
                             <li class="nav-item mb-1">
-                                <a class="nav-link text-dark rounded-3" href="#">
+                                <a class="nav-link {{ Route::is('docentes.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('docentes.index') }}">
                                     <i class="bi bi-journal-bookmark me-2"></i>Docentes & Materias
                                 </a>
                             </li>
                             <li class="nav-item mb-1">
-                                <a class="nav-link text-dark rounded-3" href="#">
+                                <a class="nav-link {{ Route::is('boletas.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('boletas.index') }}">
                                     <i class="bi bi-file-earmark-pdf me-2"></i>Boletas & Reportes
                                 </a>
                             </li>
