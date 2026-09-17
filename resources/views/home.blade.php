@@ -1,76 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-2 mb-4 border-bottom">
-    <h1 class="h3 fw-bold text-gray-800">Dashboard Administrativo</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">
-            <i class="bi bi-shield-lock-fill me-1"></i> Rol: Administrador
-        </span>
-    </div>
+<div class="pt-2 pb-2 mb-4 border-bottom">
+    <h1 class="h3 fw-bold text-gray-800">Panel de Control</h1>
+    <p class="text-muted mb-0">Resumen general del sistema escolar.</p>
 </div>
 
-<!-- Tarjetas de Acceso Rápido (Métricas del Sistema Escolar) -->
+<!-- Tarjetas Estadísticas -->
 <div class="row g-3 mb-4">
+    <!-- Ciclo Activo -->
     <div class="col-md-3">
         <div class="card border-0 shadow-sm rounded-4 bg-primary text-white p-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="text-white-50 small mb-1">Ciclo Activo</h6>
-                    <h4 class="fw-bold mb-0">2026 - 2027</h4>
+                    <h6 class="text-white-50 text-uppercase fw-bold mb-1" style="font-size: 0.75rem;">Ciclo Escolar Activo</h6>
+                    <h4 class="fw-bold mb-0">{{ $cicloActivo->nombre ?? 'Ninguno' }}</h4>
                 </div>
-                <i class="bi bi-calendar3 fs-1 text-white-50"></i>
+                <i class="bi bi-calendar-check fs-1 text-white-50"></i>
             </div>
         </div>
     </div>
 
+    <!-- Grupos Registrados -->
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 bg-white p-3 border-start border-4 border-success">
+        <div class="card border-0 shadow-sm rounded-4 p-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="text-muted small mb-1">Alumnos Inscritos</h6>
-                    <h4 class="fw-bold text-dark mb-0">0</h4>
+                    <h6 class="text-muted text-uppercase fw-bold mb-1" style="font-size: 0.75rem;">Total Grupos</h6>
+                    <h3 class="fw-bold text-dark mb-0">{{ $totalGrupos }}</h3>
                 </div>
-                <i class="bi bi-mortarboard fs-1 text-success"></i>
+                <div class="bg-light p-3 rounded-circle">
+                    <i class="bi bi-diagram-3 fs-3 text-primary"></i>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Total Alumnos -->
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 bg-white p-3 border-start border-4 border-warning">
+        <div class="card border-0 shadow-sm rounded-4 p-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="text-muted small mb-1">Docentes Activos</h6>
-                    <h4 class="fw-bold text-dark mb-0">0</h4>
+                    <h6 class="text-muted text-uppercase fw-bold mb-1" style="font-size: 0.75rem;">Total Alumnos</h6>
+                    <h3 class="fw-bold text-dark mb-0">{{ $totalAlumnos }}</h3>
                 </div>
-                <i class="bi bi-person-badge fs-1 text-warning"></i>
+                <div class="bg-light p-3 rounded-circle">
+                    <i class="bi bi-people fs-3 text-success"></i>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Total Docentes -->
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm rounded-4 bg-white p-3 border-start border-4 border-danger">
+        <div class="card border-0 shadow-sm rounded-4 p-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h6 class="text-muted small mb-1">Expedientes Incompletos</h6>
-                    <h4 class="fw-bold text-dark mb-0">0</h4>
+                    <h6 class="text-muted text-uppercase fw-bold mb-1" style="font-size: 0.75rem;">Docentes</h6>
+                    <h3 class="fw-bold text-dark mb-0">{{ $totalDocentes }}</h3>
                 </div>
-                <i class="bi bi-exclamation-triangle fs-1 text-danger"></i>
+                <div class="bg-light p-3 rounded-circle">
+                    <i class="bi bi-person-badge fs-3 text-info"></i>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Contenido del Panel Principal -->
-<div class="row">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="card-body p-4">
-                <h5 class="fw-bold mb-2">¡Bienvenido al Sistema de Control Escolar!</h5>
-                <p class="text-muted mb-0">
-                    Desde este panel podrás gestionar la estructura académica, consultar alertas de expedientes, asignar grupos a los profesores y supervisar las calificaciones del ciclo.
-                </p>
-            </div>
+<!-- Tabla de Grupos Recientes -->
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-header bg-white border-0 py-3">
+        <h5 class="fw-bold mb-0">Últimos Grupos Configurados</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Grupo / Turno</th>
+                        <th>Ciclo Escolar</th>
+                        <th>Docente Titular</th>
+                        <th>Materias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($ultimosGrupos as $grupo)
+                    <tr>
+                        <td class="ps-4">
+                            <span class="fw-bold text-primary">{{ $grupo->nombre }}</span>
+                            <small class="text-muted d-block">{{ $grupo->turno }}</small>
+                        </td>
+                        <td>{{ $grupo->ciclo->nombre ?? 'N/A' }}</td>
+                        <td>{{ $grupo->docenteTitular->nombre ?? 'Sin Titular' }}</td>
+                        <td>
+                            <span class="badge bg-light text-dark border">{{ $grupo->materias->count() }} asignadas</span>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">Aún no hay grupos </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

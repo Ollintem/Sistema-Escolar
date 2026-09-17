@@ -2,27 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Alumno;
+use App\Models\CicloEscolar;
+use App\Models\Grupo;
+use App\Models\Docente;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('home');
+        // Conteos principales para las tarjetas
+        $totalAlumnos = Alumno::count();
+        $totalGrupos = Grupo::count();
+        $cicloActivo = CicloEscolar::where('estado', 'Activo')->latest('id_ciclo')->first();
+        $totalDocentes = Docente::count();
+
+        // Obtener los últimos grupos registrados para la vista rápida
+        $ultimosGrupos = Grupo::with(['ciclo', 'docenteTitular'])
+            ->orderBy('id_grupo', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('home', compact(
+            'totalAlumnos',
+            'totalGrupos',
+            'cicloActivo',
+            'totalDocentes',
+            'ultimosGrupos'
+        ));
     }
 }
