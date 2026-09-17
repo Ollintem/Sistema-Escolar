@@ -65,28 +65,44 @@
                     <div class="position-sticky pt-3">
                         <small class="text-uppercase text-muted fw-bold ms-2">Menú Principal</small>
                         <ul class="nav flex-column mt-2">
+                            <!-- Dashboard -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link {{ Route::is('home') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('home') }}">
                                     <i class="bi bi-speedometer2 me-2"></i>Dashboard
                                 </a>
                             </li>
+
+                            <!-- TASK 2.1: Módulo 1 - Ciclos Escolares -->
                             <li class="nav-item mb-1">
-                                <a class="nav-link {{ Route::is('ciclos.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('ciclos.index') }}">
+                                <a class="nav-link {{ Route::is('ciclos.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('ciclos.index') }}">
                                     <i class="bi bi-calendar-event me-2"></i>Ciclos Escolares
                                 </a>
                             </li>
+
+                            <!-- TASK 2.1: Módulo 2 - Grupos (Con Asignación) -->
                             <li class="nav-item mb-1">
-                                <a class="nav-link {{ Route::is('alumnos.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('alumnos.index') }}">
-                                    <i class="bi bi-people me-2"></i>Alumnos & Grupos
+                                <a class="nav-link {{ Route::is('grupos.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('grupos.index') }}">
+                                    <i class="bi bi-diagram-3 me-2"></i>Grupos
                                 </a>
                             </li>
+
+                            <!-- TASK 2.2 y 2.3: Alumnos -->
                             <li class="nav-item mb-1">
-                                <a class="nav-link {{ Route::is('docentes.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('docentes.index') }}">
+                                <a class="nav-link {{ Route::is('alumnos.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('alumnos.index') }}">
+                                    <i class="bi bi-people me-2"></i>Alumnos
+                                </a>
+                            </li>
+
+                            <!-- Docentes & Materias -->
+                            <li class="nav-item mb-1">
+                                <a class="nav-link {{ Route::is('docentes.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('docentes.index') }}">
                                     <i class="bi bi-journal-bookmark me-2"></i>Docentes & Materias
                                 </a>
                             </li>
+
+                             <!-- Boletas -->
                             <li class="nav-item mb-1">
-                                <a class="nav-link {{ Route::is('boletas.index') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('boletas.index') }}">
+                                <a class="nav-link {{ Route::is('boletas.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('boletas.index') }}">
                                     <i class="bi bi-file-earmark-pdf me-2"></i>Boletas & Reportes
                                 </a>
                             </li>
