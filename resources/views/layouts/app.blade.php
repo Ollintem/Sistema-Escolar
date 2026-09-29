@@ -60,11 +60,13 @@
         <div class="container-fluid">
             <div class="row">
                 @auth
-                <!-- Sidebar Navigability -->
+                <!-- Sidebar Navigation -->
                 <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse shadow-sm min-vh-100 p-3">
                     <div class="position-sticky pt-3">
+                        
+                        <!-- MENÚ PRINCIPAL -->
                         <small class="text-uppercase text-muted fw-bold ms-2">Menú Principal</small>
-                        <ul class="nav flex-column mt-2">
+                        <ul class="nav flex-column mt-2 mb-3">
                             <!-- Dashboard -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link {{ Route::is('home') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('home') }}">
@@ -72,41 +74,56 @@
                                 </a>
                             </li>
 
-                            <!-- TASK 2.1: Módulo 1 - Ciclos Escolares -->
+                            <!-- Módulo 1 - Ciclos Escolares -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link {{ Route::is('ciclos.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('ciclos.index') }}">
                                     <i class="bi bi-calendar-event me-2"></i>Ciclos Escolares
                                 </a>
                             </li>
 
-                            <!-- TASK 2.1: Módulo 2 - Grupos (Con Asignación) -->
+                            <!-- Módulo 2 - Grupos -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link {{ Route::is('grupos.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('grupos.index') }}">
                                     <i class="bi bi-diagram-3 me-2"></i>Grupos
                                 </a>
                             </li>
 
-                            <!-- TASK 2.2 y 2.3: Alumnos -->
+                            <!-- Alumnos -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link {{ Route::is('alumnos.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('alumnos.index') }}">
                                     <i class="bi bi-people me-2"></i>Alumnos
                                 </a>
                             </li>
 
-                            <!-- Docentes & Materias -->
+                            <!-- Materias -->
                             <li class="nav-item mb-1">
-                                <a class="nav-link {{ Route::is('docentes.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('docentes.index') }}">
-                                    <i class="bi bi-journal-bookmark me-2"></i>Docentes & Materias
+                                <a class="nav-link {{ Route::is('materias.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('materias.index') }}">
+                                    <i class="bi bi-journal-bookmark me-2"></i>Materias
                                 </a>
                             </li>
 
-                             <!-- Boletas -->
+                            <!-- Boletas -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link {{ Route::is('boletas.*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('boletas.index') }}">
                                     <i class="bi bi-file-earmark-pdf me-2"></i>Boletas & Reportes
                                 </a>
                             </li>
+                            
+                            <!-- Empleados -->
+                            <li class="nav-item mb-1">
+                                <a class="nav-link {{ Route::is('personal.empleados*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('personal.empleados') }}">
+                                    <i class="bi bi-person-workspace me-2"></i>Empleados
+                                </a>
+                            </li>
+
+                            <!-- Roles y Puestos -->
+                            <li class="nav-item mb-1">
+                                <a class="nav-link {{ Route::is('personal.roles*') || Route::is('personal.permisos*') ? 'active bg-primary text-white' : 'text-dark' }} rounded-3" href="{{ route('personal.roles') }}">
+                                    <i class="bi bi-shield-lock me-2"></i>Roles y Puestos
+                                </a>
+                            </li>
                         </ul>
+
                     </div>
                 </nav>
                 @endauth

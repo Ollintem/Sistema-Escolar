@@ -15,13 +15,21 @@ class StoreAlumnoRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:100',
-            'apellido_p' => 'required|string|max:100',
-            'apellido_m' => 'required|string|max:100',
+            'apellido_paterno' => 'required|string|max:100',
+            'apellido_materno' => 'nullable|string|max:100',
+            'curp' => 'required|string|size:18|unique:students,curp',
             'fecha_nacimiento' => 'required|date',
-            'curp' => 'required|string|size:18|unique:alumnos,curp',
-            'correo' => 'required|email|unique:alumnos,correo',
-            'telefono' => 'required|string|max:15',
-            'id_grupo' => 'nullable|exists:grupos,id_grupo',
+            'genero' => 'required|in:Masculino,Femenino,Otro',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // Max 5MB
+            'tipo_sangre' => 'required|string',
+            'alergias' => 'nullable|string',
+            'observaciones_medicas' => 'nullable|string',
+            'tutor_nombre' => 'required|string|max:150',
+            'tutor_parentesco' => 'required|string',
+            'tutor_telefono' => 'required|string',
+            'tutor_email' => 'required|email',
+            'id_ciclo' => 'required|exists:ciclo_escolars,id_ciclo',
+            'id_grupo' => 'required|exists:groups,id_grupo',
         ];
     }
 }

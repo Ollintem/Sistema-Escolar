@@ -2,42 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAlumnoRequest;
 use App\Models\Alumno;
+use App\Models\Grupo;
+use App\Models\CicloEscolar;
+use App\Http\Requests\StoreAlumnoRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AlumnoController extends Controller
 {
-    /**
-     * Muestra la lista de alumnos registrados.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtenemos los alumnos paginados de 10 en 10
-        $alumnos = Alumno::orderBy('id_alumno', 'desc')->paginate(10);
-        
+        $query = Alumno::with(['grupo', 'ciclo']);
+
+        if ($request->filled('buscar')) {
+            $query->where('nombre', 'like', "%{$request->buscar}%")
+                  ->orWhere('matricula', 'like', "%{$request->buscar}%");
+        }
+
+        $alumnos = $query->paginate(10);
         return view('alumnos.index', compact('alumnos'));
     }
 
-    /**
-     * Almacena un nuevo alumno en la base de datos tras validar con FormRequest.
-     */
-    public function store(StoreAlumnoRequest $request)
+    public function create()
     {
-        // Obtiene los datos ya validados por StoreAlumnoRequest
-        Alumno::create($request->validated());
-
-        return redirect()->route('alumnos.index')
-            ->with('success', 'Alumno inscrito correctamente.');
+        $ciclos = CicloEscolar::where('estado', 'Activo')->get();
+        $grupos = Grupo::all();
+        return view('alumnos.create', compact('ciclos', 'grupos'));
     }
 
-    /**
-     * Muestra la información de un alumno específico.
-     */
-    public function show($id)
+    public function store(StoreAlumnoRequest $request)
     {
-        $alumno = Alumno::findOrFail($id);
-        
-        return view('alumnos.show', compact('alumno'));
+        $data = $request->validated();
+
+        // Generación de Matrícula Automática
+        $data['matricula'] = 'ALU-' . strtoupper(Str::random(6));
+
+        // Subida de foto si aplica
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('alumnos_fotos', 'public');
+            $data['foto'] = $path;
+        }
+
+        Alumno::create($data);
+
+        return redirect()->route('alumnos.index')->with('success', 'Alumno inscrito correctamente.');
     }
 }

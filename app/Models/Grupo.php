@@ -9,15 +9,22 @@ class Grupo extends Model
 {
     use HasFactory;
 
-    protected $table = 'grupos';
+    protected $table = 'groups';
     protected $primaryKey = 'id_grupo';
 
     protected $fillable = [
-        'grado',
+        'id_grado',
+        'grado', // <-- Indispensable para permitir la asignación masiva del campo NOT NULL
         'grupo',
+        'turno',
         'id_ciclo',
-        'id_docente', // Docente Titular
+        'docente_id',
     ];
+
+    public function grado()
+    {
+        return $this->belongsTo(Grado::class, 'id_grado', 'id_grado');
+    }
 
     public function ciclo()
     {
@@ -26,11 +33,11 @@ class Grupo extends Model
 
     public function docenteTitular()
     {
-        return $this->belongsTo(Docente::class, 'id_docente', 'id_docente');
+        return $this->belongsTo(User::class, 'docente_id', 'id');
     }
 
     public function materias()
     {
-        return $this->belongsToMany(Materia::class, 'grupo_materia', 'id_grupo', 'id_materia');
+        return $this->belongsToMany(Materia::class, 'group_subject', 'group_id', 'subject_id');
     }
 }

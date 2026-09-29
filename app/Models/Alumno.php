@@ -9,6 +9,7 @@ class Alumno extends Model
 {
     use HasFactory;
 
+    protected $table = 'alumnos';
     protected $primaryKey = 'id_alumno';
 
     protected $fillable = [
@@ -19,6 +20,17 @@ class Alumno extends Model
         'curp',
         'correo',
         'telefono',
+        'foto',
+        'tipo_sangre',
+        'alergias',
+        'observaciones_medicas',
+        'tutor_nombre',
+        'tutor_parentesco',
+        'tutor_telefono',
+        'tutor_email',
         'id_grupo',
+        'id_ciclo',
+        'grado',
+        'estado'
     ];
 }
