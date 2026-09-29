@@ -28,9 +28,11 @@ class Alumno extends Model
         'tutor_parentesco',
         'tutor_telefono',
         'tutor_email',
-        'id_grupo',
-        'id_ciclo',
-        'grado',
-        'estado'
+        'id_grupo', // <-- FK hacia la tabla groups
     ];
+
+    public function grupo()
+    {
+        return $this->belongsTo(Grupo::class, 'id_grupo', 'id_grupo');
+    }
 }

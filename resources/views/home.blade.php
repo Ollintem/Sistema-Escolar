@@ -1,22 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid py-4">
-    <!-- Encabezado de Bienvenida -->
+<div class="container-fluid py-4 px-4">
+    <!-- Banner de Bienvenida -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card bg-primary text-white shadow-sm border-0 rounded-3">
-                <div class="card-body p-4 d-flex align-items-center justify-content-between">
-                    <div>
-                        <h2 class="fw-bold mb-1">¡Bienvenido(a), {{ Auth::user()->name }}!</h2>
-                        <p class="mb-0 opacity-75">
-                            Panel de control principal del Sistema Escolar.
-                        </p>
-                    </div>
-                    <div class="d-none d-md-block">
-                        <span class="badge bg-light text-primary fs-6 px-3 py-2 rounded-pill shadow-sm">
-                            Rol: {{ Auth::user()->getRoleNames()->first() ?? 'Sin Rol' }}
-                        </span>
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+                <div class="card-body p-4 p-md-5 position-relative">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <span class="badge bg-white bg-opacity-20 text-white px-3 py-2 rounded-pill fw-bold mb-2">
+                                <i class="bi bi-shield-check me-1"></i> Sesión Activa
+                            </span>
+                            <h1 class="fw-bold mb-2 display-6">¡Bienvenido(a), {{ Auth::user()->name }}!</h1>
+                            <p class="mb-0 opacity-85 fs-6">
+                                Panel de administración principal del Sistema Escolar. Controla grupos, matrículas y personal educativo desde aquí.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0 d-flex flex-column align-items-md-end justify-content-center">
+                            <div class="bg-white text-primary rounded-4 px-4 py-3 shadow-sm d-inline-block text-start">
+                                <small class="text-uppercase fw-bold text-muted d-block fs-7">Rol Asignado</small>
+                                <span class="fw-bold fs-6 text-dark d-flex align-items-center gap-2">
+                                    <i class="bi bi-person-badge text-primary"></i>
+                                    {{ ucfirst(Auth::user()->getRoleNames()->first() ?? 'Sin Rol') }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,40 +35,44 @@
     <!-- Indicador de Ciclo Activo -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-3 bg-light">
-                <div class="card-body d-flex align-items-center justify-content-between py-3">
+            <div class="card border-0 shadow-sm rounded-4 bg-white border-start border-4 border-success">
+                <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3 px-4 gap-3">
                     <div class="d-flex align-items-center">
-                        <i class="bi bi-calendar-check text-success fs-3 me-3"></i>
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 me-3">
+                            <i class="bi bi-calendar-check-fill fs-3"></i>
+                        </div>
                         <div>
-                            <h6 class="mb-0 text-muted small text-uppercase fw-bold">Ciclo Escolar Activo</h6>
-                            <span class="fw-bold fs-5 text-dark">
-                                {{ $cicloActivo ? $cicloActivo->nombre : 'No hay ciclo activo registrado' }}
-                            </span>
+                            <span class="text-muted fs-7 text-uppercase fw-bold d-block">Ciclo Escolar Activo</span>
+                            <h4 class="fw-bold mb-0 text-dark font-monospace">
+                                {{ $cicloActivo ? $cicloActivo->nombre : 'Sin ciclo activo registrado' }}
+                            </h4>
                         </div>
                     </div>
-                    @can('ciclos_escolares.mostrar')
-                    <a href="{{ route('ciclos.index') }}" class="btn btn-outline-primary btn-sm rounded-pill">
-                        Ver Ciclos
-                    </a>
-                    @endcan
+                    <div>
+                        @can('ciclos_escolares.mostrar')
+                        <a href="{{ route('ciclos.index') }}" class="btn btn-outline-success rounded-pill px-4 fw-semibold shadow-sm">
+                            <i class="bi bi-arrow-right-circle me-1"></i> Gestionar Ciclos
+                        </a>
+                        @endcan
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tarjetas de Métricas Estadísticas -->
+    <!-- Tarjetas de Métricas / KPIs -->
     <div class="row g-3 mb-4">
         <!-- Tarjeta Alumnos -->
         @can('alumnos.mostrar')
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100 rounded-3">
-                <div class="card-body d-flex align-items-center">
-                    <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-3 me-3">
-                        <i class="bi bi-people-fill fs-2"></i>
-                    </div>
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-primary">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
-                        <h6 class="text-muted small text-uppercase mb-1 fw-bold">Alumnos</h6>
-                        <h3 class="fw-bold mb-0 text-dark">{{ $totalAlumnos }}</h3>
+                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Alumnos</span>
+                        <h2 class="fw-bold mb-0 text-dark">{{ $totalAlumnos ?? 0 }}</h2>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3">
+                        <i class="bi bi-people-fill fs-2"></i>
                     </div>
                 </div>
             </div>
@@ -69,50 +82,50 @@
         <!-- Tarjeta Grupos -->
         @can('grupos.mostrar')
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100 rounded-3">
-                <div class="card-body d-flex align-items-center">
-                    <div class="rounded-3 bg-info bg-opacity-10 text-info p-3 me-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-info">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Grupos</span>
+                        <h2 class="fw-bold mb-0 text-dark">{{ $totalGrupos ?? 0 }}</h2>
+                    </div>
+                    <div class="bg-info bg-opacity-10 text-info rounded-circle p-3">
                         <i class="bi bi-diagram-3-fill fs-2"></i>
                     </div>
-                    <div>
-                        <h6 class="text-muted small text-uppercase mb-1 fw-bold">Grupos</h6>
-                        <h3 class="fw-bold mb-0 text-dark">{{ $totalGrupos }}</h3>
-                    </div>
                 </div>
             </div>
         </div>
         @endcan
 
-        <!-- Tarjeta Docentes / Personal -->
+        <!-- Tarjeta Docentes -->
         @can('empleados.mostrar')
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100 rounded-3">
-                <div class="card-body d-flex align-items-center">
-                    <div class="rounded-3 bg-warning bg-opacity-10 text-warning p-3 me-3">
-                        <i class="bi bi-person-badge-fill fs-2"></i>
-                    </div>
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-warning">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
-                        <h6 class="text-muted small text-uppercase mb-1 fw-bold">Docentes</h6>
-                        <h3 class="fw-bold mb-0 text-dark">{{ $totalDocentes }}</h3>
+                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Docentes</span>
+                        <h2 class="fw-bold mb-0 text-dark">{{ $totalDocentes ?? 0 }}</h2>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3">
+                        <i class="bi bi-person-badge-fill fs-2"></i>
                     </div>
                 </div>
             </div>
         </div>
         @endcan
 
-        <!-- Tarjeta Accesos / Reportes -->
+        <!-- Tarjeta Boletas & Reportes -->
         @can('boletas_reportes.mostrar')
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm h-100 rounded-3">
-                <div class="card-body d-flex align-items-center">
-                    <div class="rounded-3 bg-success bg-opacity-10 text-success p-3 me-3">
-                        <i class="bi bi-file-earmark-bar-graph-fill fs-2"></i>
-                    </div>
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-success">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
-                        <h6 class="text-muted small text-uppercase mb-1 fw-bold">Boletas</h6>
-                        <a href="{{ route('boletas.index') }}" class="text-decoration-none fw-bold small">
-                            Ir a Reportes &rarr;
+                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Boletas</span>
+                        <a href="{{ route('boletas.index') }}" class="btn btn-sm btn-success rounded-pill px-3 fw-semibold mt-1">
+                            Ir a Reportes <i class="bi bi-arrow-right ms-1"></i>
                         </a>
+                    </div>
+                    <div class="bg-success bg-opacity-10 text-success rounded-circle p-3">
+                        <i class="bi bi-file-earmark-bar-graph-fill fs-2"></i>
                     </div>
                 </div>
             </div>
@@ -120,48 +133,60 @@
         @endcan
     </div>
 
-    <!-- Sección de Últimos Grupos (Si tiene acceso a Grupos) -->
+    <!-- Sección de Últimos Grupos -->
     @can('grupos.mostrar')
     <div class="row">
         <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-3">
-                <div class="card-header bg-white border-0 py-3 d-flex align-items-center justify-content-between">
-                    <h5 class="fw-bold mb-0 text-dark">Últimos Grupos Registrados</h5>
-                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light rounded-pill">Ver Todos</a>
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+                    <h6 class="fw-bold mb-0 text-secondary"><i class="bi bi-clock-history me-2"></i>Últimos Grupos Registrados</h6>
+                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light rounded-pill px-3 fw-semibold border">Ver Todos</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle table-hover mb-0">
-                        <thead class="table-light">
+                        <thead class="bg-light text-muted small text-uppercase fw-bold">
                             <tr>
-                                <th class="ps-4">Grupo / Grado</th>
-                                <th>Ciclo Escolar</th>
-                                <th>Docente Titular</th>
-                                <th class="text-end pe-4">Acciones</th>
+                                <th class="ps-4 py-3">GRUPO / GRADO</th>
+                                <th class="py-3">CICLO ESCOLAR</th>
+                                <th class="py-3">DOCENTE TITULAR</th>
+                                <th class="text-end pe-4 py-3">ACCIONES</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @forelse($ultimosGrupos as $grupo)
+                        <tbody class="border-top-0">
+                            @forelse($ultimosGrupos ?? [] as $grupo)
                             <tr>
-                                <td class="ps-4 fw-bold text-dark">
-                                    {{ $grupo->grado ?? '' }} {{ $grupo->nombre ?? $grupo->grupo }}
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold fs-7" style="width: 34px; height: 34px;">
+                                            <i class="bi bi-diagram-3"></i>
+                                        </div>
+                                        <span class="fw-bold text-dark fs-6">
+                                            {{ $grupo->grado->nombre ?? $grupo->grado }} - {{ $grupo->nombre ?? $grupo->grupo }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill font-monospace">
                                         {{ $grupo->ciclo->nombre ?? 'N/A' }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ $grupo->docenteTitular->nombre ?? 'Sin Asignar' }}
+                                    @if($grupo->docenteTitular)
+                                        <span class="fw-semibold text-dark"><i class="bi bi-person me-1 text-muted"></i>{{ $grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre }}</span>
+                                    @else
+                                        <span class="badge bg-light text-muted border px-2.5 py-1 rounded-2">Sin Asignar</span>
+                                    @endif
                                 </td>
                                 <td class="text-end pe-4">
-                                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-outline-primary rounded-circle">
-                                        <i class="bi bi-eye"></i>
+                                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light text-primary rounded-circle border shadow-sm" title="Ver Detalle">
+                                        <i class="bi bi-eye-fill"></i>
                                     </a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-4">
+                                <td colspan="4" class="text-center text-muted py-5">
+                                    <i class="bi bi-inbox fs-1 text-secondary opacity-50 d-block mb-2"></i>
                                     No hay grupos registrados recientemente.
                                 </td>
                             </tr>
@@ -174,4 +199,10 @@
     </div>
     @endcan
 </div>
+
+<style>
+    .fs-7 {
+        font-size: 0.8rem;
+    }
+</style>
 @endsection
