@@ -113,7 +113,6 @@
                 <table class="table align-middle table-hover mb-0" id="tablaGrupos">
                     <thead class="bg-light text-muted small text-uppercase fw-bold">
                         <tr>
-                            <th class="ps-4 py-3">ID</th>
                             <th class="py-3">GRUPO / TURNO</th>
                             <th class="py-3">CICLO ESCOLAR</th>
                             <th class="py-3">DOCENTE TITULAR</th>
@@ -124,9 +123,6 @@
                     <tbody class="border-top-0">
                         @forelse($grupos ?? [] as $grupo)
                         <tr>
-                            <td class="ps-4">
-                                <span class="font-monospace text-muted fw-bold">#{{ $grupo->id_grupo }}</span>
-                            </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="fw-bold text-dark fs-6">

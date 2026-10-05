@@ -96,6 +96,13 @@
                                 </a>
                             </li>
 
+                            <!-- Expedientes -->
+                            <li class="nav-item mb-1">
+                                <a class="nav-link <?php echo e(Route::is('expedientes.*') ? 'active bg-primary text-white' : 'text-dark'); ?> rounded-3" href="<?php echo e(route('expedientes.index')); ?>">
+                                    <i class="bi bi-folder-check me-2"></i>Expedientes
+                                </a>
+                            </li>
+
                             <!-- Materias -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link <?php echo e(Route::is('materias.*') ? 'active bg-primary text-white' : 'text-dark'); ?> rounded-3" href="<?php echo e(route('materias.index')); ?>">
@@ -106,7 +113,7 @@
                             <!-- Boletas -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link <?php echo e(Route::is('boletas.*') ? 'active bg-primary text-white' : 'text-dark'); ?> rounded-3" href="<?php echo e(route('boletas.index')); ?>">
-                                    <i class="bi bi-file-earmark-pdf me-2"></i>Boletas & Reportes
+                                    <i class="bi bi-file-earmark-pdf me-2"></i>Boletas 
                                 </a>
                             </li>
 
@@ -125,9 +132,9 @@
                             </li>
 
                             <!-- Calificaciones -->
-                            <li class="nav-item">
-                                <a href="<?php echo e(route('calificaciones.index')); ?>" class="nav-link <?php echo e(request()->routeIs('calificaciones.*') ? 'active' : ''); ?>">
-                                    <i class="bi bi-journal-check me-2"></i> Calificaciones
+                            <li class="nav-item mb-1">
+                                <a class="nav-link <?php echo e(Route::is('calificaciones.*') ? 'active bg-primary text-white' : 'text-dark'); ?> rounded-3" href="<?php echo e(route('calificaciones.index')); ?>">
+                                    <i class="bi bi-journal-check me-2"></i>Calificaciones
                                 </a>
                             </li>
                         </ul>

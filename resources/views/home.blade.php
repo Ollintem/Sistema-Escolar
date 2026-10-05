@@ -14,7 +14,7 @@
                             </span>
                             <h1 class="fw-bold mb-2 display-6">¡Bienvenido(a), {{ Auth::user()->name }}!</h1>
                             <p class="mb-0 opacity-85 fs-6">
-                                Panel de administración principal del Sistema Escolar. Controla grupos, matrículas, calificaciones y personal educativo desde aquí.
+                                Panel de administración principal del Sistema Escolar. Controla grupos, matrículas, calificaciones, expedientes y personal educativo desde aquí.
                             </p>
                         </div>
                         <div class="col-md-4 text-md-end mt-3 mt-md-0 d-flex flex-column align-items-md-end justify-content-center">
@@ -96,22 +96,23 @@
         </div>
         @endcan
 
-        <!-- Tarjeta Docentes -->
-        @can('empleados.mostrar')
+        <!-- Tarjeta Alertas Expedientes Incompletos -->
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-warning">
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-danger">
                 <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
-                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Docentes</span>
-                        <h2 class="fw-bold mb-0 text-dark">{{ $totalDocentes ?? 0 }}</h2>
+                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Expedientes Pendientes</span>
+                        <h2 class="fw-bold mb-0 text-danger">{{ $expedientesIncompletosCount ?? 0 }}</h2>
+                        <a href="{{ route('expedientes.index') }}" class="small text-danger fw-semibold text-decoration-none">
+                            Ver Expedientes <i class="bi bi-arrow-right"></i>
+                        </a>
                     </div>
-                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3">
-                        <i class="bi bi-person-badge-fill fs-2"></i>
+                    <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-3">
+                        <i class="bi bi-folder-x fs-2"></i>
                     </div>
                 </div>
             </div>
         </div>
-        @endcan
 
         <!-- Tarjeta Acceso a Calificaciones -->
         <div class="col-12 col-sm-6 col-xl-3">
@@ -130,6 +131,60 @@
             </div>
         </div>
     </div>
+
+    <!-- Alertas de Expedientes Incompletos (Resumen) -->
+    @if(isset($expedientesIncompletos) && count($expedientesIncompletos) > 0)
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden border-start border-4 border-danger">
+                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
+                    <h6 class="fw-bold mb-0 text-danger d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Alerta de Control Escolar: Alumnos con Documentación Pendiente
+                    </h6>
+                    <a href="{{ route('expedientes.index') }}" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold">Atender Todos</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle table-hover mb-0">
+                        <thead class="bg-light text-muted small text-uppercase fw-bold">
+                            <tr>
+                                <th class="ps-4 py-3">ALUMNO</th>
+                                <th class="py-3">GRADO / GRUPO</th>
+                                <th class="py-3">DOCUMENTOS PENDIENTES</th>
+                                <th class="text-end pe-4 py-3">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($expedientesIncompletos as $alumnoPendiente)
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="fw-bold text-dark">{{ $alumnoPendiente->nombre }} {{ $alumnoPendiente->apellido_p }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1 rounded-2">
+                                        {{ $alumnoPendiente->grado->nombre ?? '' }} {{ $alumnoPendiente->grupo->grupo ?? '' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-3 py-1 rounded-pill fw-semibold">
+                                        <i class="bi bi-file-earmark-x me-1"></i> Expediente Incompleto
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <a href="{{ route('expedientes.show', $alumnoPendiente->id_alumno) }}" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-bold">
+                                        <i class="bi bi-upload me-1"></i> Subir Documentos
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Sección de Últimos Grupos -->
     @can('grupos.mostrar')

@@ -11,6 +11,7 @@ use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\CalificacionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExpedienteController;
 
 // Redirección inicial
 Route::get('/', function () {
@@ -84,5 +85,11 @@ Route::middleware(['auth'])->group(function () {
         // Módulo de Calificaciones
         Route::get('/calificaciones', [CalificacionController::class, 'index'])->name('calificaciones.index');
         Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store');
+
+        // Módulo Expedientes y Alertas
+        Route::get('/expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index');
+        Route::get('/expedientes/{id}', [ExpedienteController::class, 'show'])->name('expedientes.show');
+        Route::post('/expedientes/{id}/upload', [ExpedienteController::class, 'uploadDocument'])->name('expedientes.upload');
+        Route::get('/expedientes/download/{idDocumento}', [ExpedienteController::class, 'downloadDocument'])->name('expedientes.download');
     });
 });

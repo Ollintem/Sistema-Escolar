@@ -35,4 +35,8 @@ class Alumno extends Model
     {
         return $this->belongsTo(Grupo::class, 'id_grupo', 'id_grupo');
     }
+    public function documentos()
+    {
+        return $this->hasMany(StudentDocument::class, 'id_alumno', 'id_alumno');
+    }
 }

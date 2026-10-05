@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4 px-4">
     <!-- Encabezado Principal -->

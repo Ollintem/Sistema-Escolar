@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4 px-4">
     <!-- Header Principal -->
@@ -129,7 +127,6 @@
                     <thead class="bg-light text-muted small text-uppercase fw-bold">
                         <tr>
                             <th class="ps-4 py-3">FOTO</th>
-                            <th class="py-3">MATRÍCULA</th>
                             <th class="py-3">NOMBRE COMPLETO</th>
                             <th class="py-3">GRADO</th>
                             <th class="py-3">GRUPO</th>
@@ -144,12 +141,6 @@
                             <td class="ps-4">
                                 <img src="<?php echo e($alumno->foto ? asset('storage/'.$alumno->foto) : 'https://ui-avatars.com/api/?name='.urlencode($alumno->nombre.' '.$alumno->apellido_p).'&background=0d6efd&color=fff'); ?>" 
                                      class="rounded-circle object-fit-cover border shadow-sm" width="40" height="40" alt="Foto Alumno">
-                            </td>
-                            <td>
-                                <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill font-monospace fs-7">
-                                    #<?php echo e($alumno->id_alumno); ?>
-
-                                </span>
                             </td>
                             <td>
                                 <div class="fw-bold text-dark"><?php echo e($alumno->nombre); ?> <?php echo e($alumno->apellido_p); ?> <?php echo e($alumno->apellido_m); ?></div>

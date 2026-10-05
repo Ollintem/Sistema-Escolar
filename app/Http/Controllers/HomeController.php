@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Models\CicloEscolar;
 use App\Models\Grupo;
-use App\Models\Docente;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -16,24 +17,37 @@ class HomeController extends Controller
 
     public function index()
     {
-        // Conteos principales para las tarjetas
+        // 1. Conteos principales
         $totalAlumnos = Alumno::count();
         $totalGrupos = Grupo::count();
+        $totalDocentes = User::role('Docente')->count(); // Conteo vía roles Spatie
         $cicloActivo = CicloEscolar::where('estado', 'Activo')->latest('id_ciclo')->first();
-        //$totalDocentes = Docente::count();
 
-        // Obtener los últimos grupos registrados para la vista rápida
-        $ultimosGrupos = Grupo::with(['ciclo', 'docenteTitular'])
+        // 2. Últimos grupos registrados
+        $ultimosGrupos = Grupo::with(['grado', 'ciclo', 'docenteTitular'])
             ->orderBy('id_grupo', 'desc')
             ->take(5)
             ->get();
 
+        // 3. Control de Alertas: Expedientes Incompletos (Alumnos con menos de 4 documentos)
+        $expedientesIncompletos = Alumno::with(['grupo.grado'])
+            ->withCount('documentos')
+            ->having('documentos_count', '<', 4)
+            ->take(5)
+            ->get();
+
+        $expedientesIncompletosCount = Alumno::withCount('documentos')
+            ->having('documentos_count', '<', 4)
+            ->count();
+
         return view('home', compact(
             'totalAlumnos',
             'totalGrupos',
+            'totalDocentes',
             'cicloActivo',
-            //'totalDocentes',
-            'ultimosGrupos'
+            'ultimosGrupos',
+            'expedientesIncompletos',
+            'expedientesIncompletosCount'
         ));
     }
 }

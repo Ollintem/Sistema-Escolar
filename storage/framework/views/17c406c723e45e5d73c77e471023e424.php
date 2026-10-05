@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4 px-4">
     <!-- Encabezado con Acciones -->
@@ -113,7 +111,6 @@
                 <table class="table align-middle table-hover mb-0" id="tablaGrupos">
                     <thead class="bg-light text-muted small text-uppercase fw-bold">
                         <tr>
-                            <th class="ps-4 py-3">ID</th>
                             <th class="py-3">GRUPO / TURNO</th>
                             <th class="py-3">CICLO ESCOLAR</th>
                             <th class="py-3">DOCENTE TITULAR</th>
@@ -124,9 +121,6 @@
                     <tbody class="border-top-0">
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $grupos ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grupo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                         <tr>
-                            <td class="ps-4">
-                                <span class="font-monospace text-muted fw-bold">#<?php echo e($grupo->id_grupo); ?></span>
-                            </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="fw-bold text-dark fs-6">

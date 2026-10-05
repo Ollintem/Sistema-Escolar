@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4 px-4">
     <!-- Encabezado Principal -->
@@ -116,7 +114,6 @@
                 <table class="table align-middle table-hover mb-0" id="tablaCiclos">
                     <thead class="bg-light text-muted small text-uppercase fw-bold">
                         <tr>
-                            <th class="ps-4 py-3">ID</th>
                             <th class="py-3">NOMBRE DEL CICLO</th>
                             <th class="py-3">FECHA INICIO</th>
                             <th class="py-3">FECHA FIN</th>
@@ -127,9 +124,6 @@
                     <tbody class="border-top-0">
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $ciclos ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ciclo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                         <tr>
-                            <td class="ps-4">
-                                <span class="font-monospace text-muted fw-bold">#<?php echo e($ciclo->id_ciclo); ?></span>
-                            </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold fs-7" style="width: 34px; height: 34px;">
