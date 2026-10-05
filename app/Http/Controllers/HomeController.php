@@ -20,7 +20,7 @@ class HomeController extends Controller
         $totalAlumnos = Alumno::count();
         $totalGrupos = Grupo::count();
         $cicloActivo = CicloEscolar::where('estado', 'Activo')->latest('id_ciclo')->first();
-        $totalDocentes = Docente::count();
+        //$totalDocentes = Docente::count();
 
         // Obtener los últimos grupos registrados para la vista rápida
         $ultimosGrupos = Grupo::with(['ciclo', 'docenteTitular'])
@@ -32,7 +32,7 @@ class HomeController extends Controller
             'totalAlumnos',
             'totalGrupos',
             'cicloActivo',
-            'totalDocentes',
+            //'totalDocentes',
             'ultimosGrupos'
         ));
     }

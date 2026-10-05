@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4 px-4">
     <!-- Encabezado con Acciones -->
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
@@ -14,47 +14,47 @@
             <p class="text-muted mb-0">Administración de grupos, turnos, docentes titulares y materias asignadas.</p>
         </div>
         <div class="d-flex gap-2">
-            @can('grupos.crear')
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('grupos.crear')): ?>
             <button class="btn btn-outline-primary rounded-pill px-4 py-2.5 shadow-sm fw-bold d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalNuevoGrado">
                 <i class="bi bi-journal-plus fs-5"></i> Nuevo Grado
             </button>
             <button class="btn btn-primary rounded-pill px-4 py-2.5 shadow-sm fw-bold d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalNuevoGrupo">
                 <i class="bi bi-plus-lg fs-5"></i> Nuevo Grupo
             </button>
-            @endcan
+            <?php endif; ?>
         </div>
     </div>
 
     <!-- Mensajes de Alerta -->
-    @if(session('success'))
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4" role="alert">
             <div class="d-flex align-items-center">
                 <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
                 <div>
                     <strong class="d-block">¡Operación Exitosa!</strong>
-                    <span class="small">{{ session('success') }}</span>
+                    <span class="small"><?php echo e(session('success')); ?></span>
                 </div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    @if($errors->any())
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($errors->any()): ?>
         <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4 mb-4" role="alert">
             <div class="d-flex align-items-center">
                 <i class="bi bi-exclamation-triangle-fill fs-4 me-3 text-danger"></i>
                 <div>
                     <strong class="d-block">Error al procesar la solicitud:</strong>
                     <ul class="mb-0 ps-3 small">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                     </ul>
                 </div>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     <!-- Tarjetas de Métricas Rápidas (KPIs) -->
     <div class="row g-3 mb-4">
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-semibold d-block">Grupos Registrados</span>
-                        <h3 class="fw-bold mb-0 text-dark">{{ count($grupos ?? []) }}</h3>
+                        <h3 class="fw-bold mb-0 text-dark"><?php echo e(count($grupos ?? [])); ?></h3>
                     </div>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                     </div>
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-semibold d-block">Docentes Disponibles</span>
-                        <h3 class="fw-bold mb-0 text-dark">{{ count($docentes ?? []) }}</h3>
+                        <h3 class="fw-bold mb-0 text-dark"><?php echo e(count($docentes ?? [])); ?></h3>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                     </div>
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-semibold d-block">Ciclos Activos</span>
-                        <h3 class="fw-bold mb-0 text-dark">{{ count($ciclos ?? []) }}</h3>
+                        <h3 class="fw-bold mb-0 text-dark"><?php echo e(count($ciclos ?? [])); ?></h3>
                     </div>
                 </div>
             </div>
@@ -122,81 +122,87 @@
                         </tr>
                     </thead>
                     <tbody class="border-top-0">
-                        @forelse($grupos ?? [] as $grupo)
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $grupos ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grupo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                         <tr>
                             <td class="ps-4">
-                                <span class="font-monospace text-muted fw-bold">#{{ $grupo->id_grupo }}</span>
+                                <span class="font-monospace text-muted fw-bold">#<?php echo e($grupo->id_grupo); ?></span>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="fw-bold text-dark fs-6">
-                                        {{ $grupo->grado->nombre ?? $grupo->grado }} - {{ $grupo->grupo ?? $grupo->nombre }}
+                                        <?php echo e($grupo->grado->nombre ?? $grupo->grado); ?> - <?php echo e($grupo->grupo ?? $grupo->nombre); ?>
+
                                     </span>
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary border rounded-pill px-2.5 py-1">
-                                        <i class="bi bi-clock me-1"></i>{{ $grupo->turno }}
+                                        <i class="bi bi-clock me-1"></i><?php echo e($grupo->turno); ?>
+
                                     </span>
                                 </div>
                             </td>
                             <td>
                                 <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill font-monospace">
-                                    <i class="bi bi-calendar3 me-1"></i>{{ $grupo->ciclo->nombre ?? 'Sin Asignar' }}
+                                    <i class="bi bi-calendar3 me-1"></i><?php echo e($grupo->ciclo->nombre ?? 'Sin Asignar'); ?>
+
                                 </span>
                             </td>
                             <td>
-                                @if($grupo->docenteTitular)
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($grupo->docenteTitular): ?>
                                     <div class="d-flex align-items-center gap-2">
                                         <div class="avatar-sm bg-info text-white rounded-circle d-flex align-items-center justify-content-center fw-bold fs-7" style="width: 32px; height: 32px;">
-                                            {{ strtoupper(substr($grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre, 0, 1)) }}
+                                            <?php echo e(strtoupper(substr($grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre, 0, 1))); ?>
+
                                         </div>
-                                        <span class="fw-semibold text-dark">{{ $grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre }}</span>
+                                        <span class="fw-semibold text-dark"><?php echo e($grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre); ?></span>
                                     </div>
-                                @else
+                                <?php else: ?>
                                     <span class="badge bg-light text-muted border px-2.5 py-1 rounded-2"><i class="bi bi-dash-circle me-1"></i>Sin Asignar</span>
-                                @endif
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </td>
                             <td>
                                 <div class="d-flex flex-column gap-1">
-                                    @forelse($grupo->materias as $materia)
-                                        @php
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_2 = true; $__currentLoopData = $grupo->materias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $materia): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                        <?php
                                             $docenteMateriaId = $materia->pivot->docente_id ?? null;
                                             $docenteObj = $docentes->firstWhere('id', (int)$docenteMateriaId);
-                                        @endphp
+                                        ?>
                                         <div class="d-flex align-items-center gap-2">
                                             <span class="badge bg-info bg-opacity-10 text-info-emphasis border border-info-subtle px-2 py-1 rounded-2 small fw-semibold">
-                                                <i class="bi bi-journal-bookmark me-1"></i>{{ $materia->nombre }}
+                                                <i class="bi bi-journal-bookmark me-1"></i><?php echo e($materia->nombre); ?>
+
                                             </span>
                                             <small class="text-secondary fs-7">
-                                                <i class="bi bi-person me-1"></i>{{ $docenteObj->name ?? $docenteObj->nombre ?? 'Sin docente' }}
+                                                <i class="bi bi-person me-1"></i><?php echo e($docenteObj->name ?? $docenteObj->nombre ?? 'Sin docente'); ?>
+
                                             </small>
                                         </div>
-                                    @empty
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                         <span class="text-muted small italic">Sin materias asignadas</span>
-                                    @endforelse
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </td>
                             <td class="text-end pe-4">
                                 <div class="btn-group gap-1">
-                                    @can('grupos.editar')
-                                    <a href="{{ route('grupos.edit', $grupo->id_grupo) }}" 
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('grupos.editar')): ?>
+                                    <a href="<?php echo e(route('grupos.edit', $grupo->id_grupo)); ?>" 
                                        class="btn btn-sm btn-light text-primary rounded-circle border shadow-sm" 
                                        title="Editar Grupo">
                                         <i class="bi bi-pencil-fill"></i>
                                     </a>
-                                    @endcan
+                                    <?php endif; ?>
 
-                                    @can('grupos.eliminar')
-                                    <form action="{{ route('grupos.destroy', $grupo->id_grupo) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este grupo?');">
-                                        @csrf
-                                        @method('DELETE')
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('grupos.eliminar')): ?>
+                                    <form action="<?php echo e(route('grupos.destroy', $grupo->id_grupo)); ?>" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este grupo?');">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
                                         <button type="submit" class="btn btn-sm btn-light text-danger rounded-circle border shadow-sm" title="Eliminar Grupo">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
-                                    @endcan
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         </tr>
-                        @empty
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                         <tr>
                             <td colspan="6" class="text-center text-muted py-5">
                                 <i class="bi bi-diagram-3 fs-1 text-secondary opacity-50 d-block mb-3"></i>
@@ -204,7 +210,7 @@
                                 <p class="small text-muted mb-0">Comienza registrando un grado y luego crea un nuevo grupo.</p>
                             </td>
                         </tr>
-                        @endforelse
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -222,8 +228,8 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('grados.store') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('grados.store')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label fw-bold text-secondary small">NOMBRE DEL GRADO *</label>
@@ -249,22 +255,22 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('grupos.store') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('grupos.store')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="modal-body p-4">
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-secondary small">GRADO *</label>
                             <select name="id_grado" class="form-select rounded-3" required>
                                 <option value="">Seleccione Grado...</option>
-                                @foreach($grados ?? [] as $grado)
-                                    <option value="{{ $grado->id_grado }}">{{ $grado->nombre }} ({{ $grado->nivel ?? 'Semestre' }})</option>
-                                @endforeach
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $grados ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grado): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                    <option value="<?php echo e($grado->id_grado); ?>"><?php echo e($grado->nombre); ?> (<?php echo e($grado->nivel ?? 'Semestre'); ?>)</option>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-secondary small">GRUPO / IDENTIFICADOR *</label>
-                            <input type="text" name="nombre" class="form-control rounded-3" placeholder="Ej. A, B, 101" required value="{{ old('nombre') }}">
+                            <input type="text" name="nombre" class="form-control rounded-3" placeholder="Ej. A, B, 101" required value="<?php echo e(old('nombre')); ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-bold text-secondary small">TURNO *</label>
@@ -280,18 +286,18 @@
                             <label class="form-label fw-bold text-secondary small">CICLO ESCOLAR *</label>
                             <select name="id_ciclo" class="form-select rounded-3" required>
                                 <option value="">Seleccione ciclo...</option>
-                                @foreach($ciclos ?? [] as $ciclo)
-                                    <option value="{{ $ciclo->id_ciclo }}">{{ $ciclo->nombre }}</option>
-                                @endforeach
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $ciclos ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ciclo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                    <option value="<?php echo e($ciclo->id_ciclo); ?>"><?php echo e($ciclo->nombre); ?></option>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold text-secondary small">DOCENTE TITULAR</label>
                             <select name="docente_id" class="form-select rounded-3">
                                 <option value="">Sin Asignar</option>
-                                @foreach($docentes ?? [] as $docente)
-                                    <option value="{{ $docente->id }}">{{ $docente->name ?? $docente->nombre }}</option>
-                                @endforeach
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $docentes ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $docente): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                    <option value="<?php echo e($docente->id); ?>"><?php echo e($docente->name ?? $docente->nombre); ?></option>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             </select>
                         </div>
                     </div>
@@ -301,29 +307,29 @@
                         <div class="col-12">
                             <label class="form-label fw-bold text-secondary small">ASIGNACIÓN DE MATERIAS Y DOCENTES POR ASIGNATURA</label>
                             <div class="card border-0 bg-light p-3 rounded-3" style="max-height: 250px; overflow-y: auto;">
-                                @forelse($materias ?? [] as $materia)
-                                    @php $mId = $materia->id_materia ?? $materia->id; @endphp
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $materias ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $materia): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                    <?php $mId = $materia->id_materia ?? $materia->id; ?>
                                     <div class="row align-items-center mb-2 pb-2 border-bottom">
                                         <div class="col-md-5">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="materias[]" value="{{ $mId }}" id="mat_{{ $mId }}">
-                                                <label class="form-check-label fw-semibold text-dark small" for="mat_{{ $mId }}">
-                                                    {{ $materia->nombre }} <span class="text-muted font-monospace">({{ $materia->clave ?? 'S/C' }})</span>
+                                                <input class="form-check-input" type="checkbox" name="materias[]" value="<?php echo e($mId); ?>" id="mat_<?php echo e($mId); ?>">
+                                                <label class="form-check-label fw-semibold text-dark small" for="mat_<?php echo e($mId); ?>">
+                                                    <?php echo e($materia->nombre); ?> <span class="text-muted font-monospace">(<?php echo e($materia->clave ?? 'S/C'); ?>)</span>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
-                                            <select name="docentes_materia[{{ $mId }}]" class="form-select form-select-sm rounded-3">
+                                            <select name="docentes_materia[<?php echo e($mId); ?>]" class="form-select form-select-sm rounded-3">
                                                 <option value="">Seleccionar Docente Impartidor...</option>
-                                                @foreach($docentes ?? [] as $docente)
-                                                    <option value="{{ $docente->id }}">{{ $docente->name ?? $docente->nombre }}</option>
-                                                @endforeach
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $docentes ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $docente): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
+                                                    <option value="<?php echo e($docente->id); ?>"><?php echo e($docente->name ?? $docente->nombre); ?></option>
+                                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                             </select>
                                         </div>
                                     </div>
-                                @empty
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                     <div class="text-muted small ps-2">No hay materias registradas en el catálogo.</div>
-                                @endforelse
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -354,4 +360,5 @@
         font-size: 0.8rem;
     }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Natt\Documents\Proyecto Sis\sistema-escolar\resources\views/grupos/index.blade.php ENDPATH**/ ?>

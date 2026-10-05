@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid py-4 px-4">
     <!-- Banner de Bienvenida -->
     <div class="row mb-4">
@@ -12,7 +10,7 @@
                             <span class="badge bg-white bg-opacity-20 text-white px-3 py-2 rounded-pill fw-bold mb-2">
                                 <i class="bi bi-shield-check me-1"></i> Sesión Activa
                             </span>
-                            <h1 class="fw-bold mb-2 display-6">¡Bienvenido(a), {{ Auth::user()->name }}!</h1>
+                            <h1 class="fw-bold mb-2 display-6">¡Bienvenido(a), <?php echo e(Auth::user()->name); ?>!</h1>
                             <p class="mb-0 opacity-85 fs-6">
                                 Panel de administración principal del Sistema Escolar. Controla grupos, matrículas, calificaciones y personal educativo desde aquí.
                             </p>
@@ -22,7 +20,8 @@
                                 <small class="text-uppercase fw-bold text-muted d-block fs-7">Rol Asignado</small>
                                 <span class="fw-bold fs-6 text-dark d-flex align-items-center gap-2">
                                     <i class="bi bi-person-badge text-primary"></i>
-                                    {{ ucfirst(Auth::user()->getRoleNames()->first() ?? 'Sin Rol') }}
+                                    <?php echo e(ucfirst(Auth::user()->getRoleNames()->first() ?? 'Sin Rol')); ?>
+
                                 </span>
                             </div>
                         </div>
@@ -44,16 +43,17 @@
                         <div>
                             <span class="text-muted fs-7 text-uppercase fw-bold d-block">Ciclo Escolar Activo</span>
                             <h4 class="fw-bold mb-0 text-dark font-monospace">
-                                {{ $cicloActivo ? $cicloActivo->nombre : 'Sin ciclo activo registrado' }}
+                                <?php echo e($cicloActivo ? $cicloActivo->nombre : 'Sin ciclo activo registrado'); ?>
+
                             </h4>
                         </div>
                     </div>
                     <div>
-                        @can('ciclos_escolares.mostrar')
-                        <a href="{{ route('ciclos.index') }}" class="btn btn-outline-success rounded-pill px-4 fw-semibold shadow-sm">
+                        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('ciclos_escolares.mostrar')): ?>
+                        <a href="<?php echo e(route('ciclos.index')); ?>" class="btn btn-outline-success rounded-pill px-4 fw-semibold shadow-sm">
                             <i class="bi bi-arrow-right-circle me-1"></i> Gestionar Ciclos
                         </a>
-                        @endcan
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -63,13 +63,13 @@
     <!-- Tarjetas de Métricas / KPIs -->
     <div class="row g-3 mb-4">
         <!-- Tarjeta Alumnos -->
-        @can('alumnos.mostrar')
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('alumnos.mostrar')): ?>
         <div class="col-12 col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-primary">
                 <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Alumnos</span>
-                        <h2 class="fw-bold mb-0 text-dark">{{ $totalAlumnos ?? 0 }}</h2>
+                        <h2 class="fw-bold mb-0 text-dark"><?php echo e($totalAlumnos ?? 0); ?></h2>
                     </div>
                     <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3">
                         <i class="bi bi-people-fill fs-2"></i>
@@ -77,16 +77,16 @@
                 </div>
             </div>
         </div>
-        @endcan
+        <?php endif; ?>
 
         <!-- Tarjeta Grupos -->
-        @can('grupos.mostrar')
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('grupos.mostrar')): ?>
         <div class="col-12 col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-info">
                 <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Grupos</span>
-                        <h2 class="fw-bold mb-0 text-dark">{{ $totalGrupos ?? 0 }}</h2>
+                        <h2 class="fw-bold mb-0 text-dark"><?php echo e($totalGrupos ?? 0); ?></h2>
                     </div>
                     <div class="bg-info bg-opacity-10 text-info rounded-circle p-3">
                         <i class="bi bi-diagram-3-fill fs-2"></i>
@@ -94,16 +94,16 @@
                 </div>
             </div>
         </div>
-        @endcan
+        <?php endif; ?>
 
         <!-- Tarjeta Docentes -->
-        @can('empleados.mostrar')
+        <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('empleados.mostrar')): ?>
         <div class="col-12 col-sm-6 col-xl-3">
             <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-warning">
                 <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Docentes</span>
-                        <h2 class="fw-bold mb-0 text-dark">{{ $totalDocentes ?? 0 }}</h2>
+                        <h2 class="fw-bold mb-0 text-dark"><?php echo e($totalDocentes ?? 0); ?></h2>
                     </div>
                     <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3">
                         <i class="bi bi-person-badge-fill fs-2"></i>
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        @endcan
+        <?php endif; ?>
 
         <!-- Tarjeta Acceso a Calificaciones -->
         <div class="col-12 col-sm-6 col-xl-3">
@@ -119,7 +119,7 @@
                 <div class="card-body p-4 d-flex align-items-center justify-content-between">
                     <div>
                         <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Calificaciones</span>
-                        <a href="{{ route('calificaciones.index') }}" class="btn btn-sm btn-success rounded-pill px-3 fw-semibold mt-1">
+                        <a href="<?php echo e(route('calificaciones.index')); ?>" class="btn btn-sm btn-success rounded-pill px-3 fw-semibold mt-1">
                             Capturar <i class="bi bi-award-fill ms-1"></i>
                         </a>
                     </div>
@@ -132,13 +132,13 @@
     </div>
 
     <!-- Sección de Últimos Grupos -->
-    @can('grupos.mostrar')
+    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('grupos.mostrar')): ?>
     <div class="row">
         <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
                 <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
                     <h6 class="fw-bold mb-0 text-secondary"><i class="bi bi-clock-history me-2"></i>Últimos Grupos Registrados</h6>
-                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light rounded-pill px-3 fw-semibold border">Ver Todos</a>
+                    <a href="<?php echo e(route('grupos.index')); ?>" class="btn btn-sm btn-light rounded-pill px-3 fw-semibold border">Ver Todos</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle table-hover mb-0">
@@ -151,7 +151,7 @@
                             </tr>
                         </thead>
                         <tbody class="border-top-0">
-                            @forelse($ultimosGrupos ?? [] as $grupo)
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $ultimosGrupos ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grupo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                             <tr>
                                 <td class="ps-4">
                                     <div class="d-flex align-items-center gap-2">
@@ -159,48 +159,50 @@
                                             <i class="bi bi-diagram-3"></i>
                                         </div>
                                         <span class="fw-bold text-dark fs-6">
-                                            {{ $grupo->grado->nombre ?? $grupo->grado }} - {{ $grupo->nombre ?? $grupo->grupo }}
+                                            <?php echo e($grupo->grado->nombre ?? $grupo->grado); ?> - <?php echo e($grupo->nombre ?? $grupo->grupo); ?>
+
                                         </span>
                                     </div>
                                 </td>
                                 <td>
                                     <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill font-monospace">
-                                        {{ $grupo->ciclo->nombre ?? 'N/A' }}
+                                        <?php echo e($grupo->ciclo->nombre ?? 'N/A'); ?>
+
                                     </span>
                                 </td>
                                 <td>
-                                    @if($grupo->docenteTitular)
-                                        <span class="fw-semibold text-dark"><i class="bi bi-person me-1 text-muted"></i>{{ $grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre }}</span>
-                                    @else
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($grupo->docenteTitular): ?>
+                                        <span class="fw-semibold text-dark"><i class="bi bi-person me-1 text-muted"></i><?php echo e($grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre); ?></span>
+                                    <?php else: ?>
                                         <span class="badge bg-light text-muted border px-2.5 py-1 rounded-2">Sin Asignar</span>
-                                    @endif
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="btn-group gap-1">
-                                        <a href="{{ route('calificaciones.index', ['id_grupo' => $grupo->id_grupo]) }}" class="btn btn-sm btn-light text-success rounded-circle border shadow-sm" title="Capturar Calificaciones">
+                                        <a href="<?php echo e(route('calificaciones.index', ['id_grupo' => $grupo->id_grupo])); ?>" class="btn btn-sm btn-light text-success rounded-circle border shadow-sm" title="Capturar Calificaciones">
                                             <i class="bi bi-award-fill"></i>
                                         </a>
-                                        <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light text-primary rounded-circle border shadow-sm" title="Ver Detalle">
+                                        <a href="<?php echo e(route('grupos.index')); ?>" class="btn btn-sm btn-light text-primary rounded-circle border shadow-sm" title="Ver Detalle">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                     </div>
                                 </td>
                             </tr>
-                            @empty
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                             <tr>
                                 <td colspan="4" class="text-center text-muted py-5">
                                     <i class="bi bi-inbox fs-1 text-secondary opacity-50 d-block mb-2"></i>
                                     No hay grupos registrados recientemente.
                                 </td>
                             </tr>
-                            @endforelse
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    @endcan
+    <?php endif; ?>
 </div>
 
 <style>
@@ -208,4 +210,5 @@
         font-size: 0.8rem;
     }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Natt\Documents\Proyecto Sis\sistema-escolar\resources\views/home.blade.php ENDPATH**/ ?>

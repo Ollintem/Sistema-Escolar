@@ -8,9 +8,11 @@ use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\MateriaController;
+use App\Http\Controllers\CalificacionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+// Redirección inicial
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -20,7 +22,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     
-    // Dashboard (Libre de restricciones para todo usuario autenticado)
+    // Dashboard principal
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     // Perfil de Usuario
@@ -35,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/alumnos/{alumno}', [AlumnoController::class, 'show'])->middleware('can:alumnos.mostrar')->name('alumnos.show');
     Route::get('/alumnos/{alumno}/edit', [AlumnoController::class, 'edit'])->middleware('can:alumnos.editar')->name('alumnos.edit');
 
-    // Rutas protegidas contra edición/eliminación
+    // Rutas protegidas contra edición/eliminación de alumnos
     Route::middleware(['protect.admin'])->group(function () {
         Route::put('/alumnos/{alumno}', [AlumnoController::class, 'update'])->middleware('can:alumnos.editar')->name('alumnos.update');
         Route::delete('/alumnos/{alumno}', [AlumnoController::class, 'destroy'])->middleware('can:alumnos.eliminar')->name('alumnos.destroy');
@@ -49,17 +51,20 @@ Route::middleware(['auth'])->group(function () {
     // Módulo Grupos
     Route::get('/grupos', [GrupoController::class, 'index'])->middleware('can:grupos.mostrar')->name('grupos.index');
     Route::post('/grupos', [GrupoController::class, 'store'])->middleware('can:grupos.crear')->name('grupos.store');
+    Route::get('/grupos/{id}/edit', [GrupoController::class, 'edit'])->middleware('can:grupos.editar')->name('grupos.edit'); // <-- Nueva ruta para la vista edit.blade.php
+    Route::put('/grupos/{id}', [GrupoController::class, 'update'])->middleware('can:grupos.editar')->name('grupos.update');
+    Route::delete('/grupos/{id}', [GrupoController::class, 'destroy'])->middleware('can:grupos.eliminar')->name('grupos.destroy');
 
     // Módulo Materias
     Route::get('/materias', [MateriaController::class, 'index'])->middleware('can:materias.mostrar')->name('materias.index');
     Route::post('/materias', [MateriaController::class, 'store'])->middleware('can:materias.crear')->name('materias.store');
 
-    // Módulos de vistas directas
+    // Reportes & Boletas
     Route::get('/boletas', function() {
         return view('boletas.index');
     })->middleware('can:boletas_reportes.mostrar')->name('boletas.index');
 
-    // Módulo Personal (Empleados / Roles / Permisos)
+    // Módulo Personal & Ajustes del Sistema
     Route::prefix('personal')->group(function () {
         // Empleados
         Route::get('/empleados', [PersonalController::class, 'empleados'])->middleware('can:empleados.mostrar')->name('personal.empleados');
@@ -67,14 +72,17 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/empleados/{id}', [PersonalController::class, 'updateEmpleado'])->middleware('can:empleados.editar')->name('personal.empleados.update');
         Route::delete('/empleados/{id}', [PersonalController::class, 'destroyEmpleado'])->middleware('can:empleados.eliminar')->name('personal.empleados.destroy');
 
-        // Roles / Puestos
+        // Roles & Permisos
         Route::get('/roles', [PersonalController::class, 'roles'])->middleware('can:roles_puestos.mostrar')->name('personal.roles');
         Route::post('/roles', [PersonalController::class, 'storeRole'])->middleware('can:roles_puestos.crear')->name('personal.roles.store');
-
-        // Matriz de Permisos por Rol
         Route::get('/roles/{role}/permisos', [PersonalController::class, 'permisos'])->middleware('can:roles_puestos.gestionar')->name('personal.permisos');
         Route::put('/roles/{role}/permisos', [PersonalController::class, 'updatePermisos'])->middleware('can:roles_puestos.gestionar')->name('personal.permisos.update');
 
+        // Creación rápida de Grados
         Route::post('/grados', [GrupoController::class, 'storeGrado'])->name('grados.store');
+
+        // Módulo de Calificaciones
+        Route::get('/calificaciones', [CalificacionController::class, 'index'])->name('calificaciones.index');
+        Route::post('/calificaciones', [CalificacionController::class, 'store'])->name('calificaciones.store');
     });
 });
