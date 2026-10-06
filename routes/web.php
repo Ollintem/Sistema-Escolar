@@ -12,6 +12,7 @@ use App\Http\Controllers\CalificacionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExpedienteController;
+use Illuminate\Support\Facades\Storage;
 
 // Redirección inicial
 Route::get('/', function () {
@@ -91,5 +92,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/expedientes/{id}', [ExpedienteController::class, 'show'])->name('expedientes.show');
         Route::post('/expedientes/{id}/upload', [ExpedienteController::class, 'uploadDocument'])->name('expedientes.upload');
         Route::get('/expedientes/download/{idDocumento}', [ExpedienteController::class, 'downloadDocument'])->name('expedientes.download');
+        Route::get('/expedientes/ver-archivo/{id}', function ($id) {
+            $documento = \App\Models\StudentDocument::findOrFail($id);
+
+            // Obtiene el valor intentando con los nombres de columna más comunes
+            $path = $documento->archivo_path 
+                ?? $documento->ruta_archivo 
+                ?? $documento->path 
+                ?? $documento->ruta 
+                ?? $documento->file_path;
+
+            // Si la columna es null o no existe en la BD
+            if (!$path) {
+                abort(404, 'La ruta del archivo está vacía en la base de datos.');
+            }
+
+            if (!Storage::disk('public')->exists($path)) {
+                abort(404, 'El archivo no existe en el disco.');
+            }
+
+            return response()->file(storage_path('app/public/' . $path));
+        })->name('expedientes.ver');
     });
 });

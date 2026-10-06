@@ -70,6 +70,9 @@ class ExpedienteController extends Controller
         $request->validate([
             'tipo_documento' => 'required|string',
             'archivo'        => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // Máx 5MB
+        ], [
+            'archivo.max' => 'El archivo no debe pesar más de 5 MB.',
+            'archivo.mimes' => 'Solo se permiten formatos PDF, JPG y PNG.'
         ]);
 
         $alumno = Alumno::findOrFail($id);
