@@ -96,6 +96,13 @@
                                 </a>
                             </li>
 
+                            <!-- Asistencias -->
+                            <li class="nav-item mb-1">
+                                <a class="nav-link <?php echo e(Route::is('asistencias.*') ? 'active bg-primary text-white' : 'text-dark'); ?> rounded-3" href="<?php echo e(route('asistencias.index')); ?>">
+                                    <i class="bi bi-calendar-check me-2"></i>Asistencias
+                                </a>
+                            </li>
+
                             <!-- Expedientes -->
                             <li class="nav-item mb-1">
                                 <a class="nav-link <?php echo e(Route::is('expedientes.*') ? 'active bg-primary text-white' : 'text-dark'); ?> rounded-3" href="<?php echo e(route('expedientes.index')); ?>">
@@ -150,8 +157,8 @@
             </div>
         </div>
     </div>
+    
     <!-- Bootstrap 5 Bundle JS (incluye Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 </body>
 </html><?php /**PATH C:\Users\Natt\Documents\Proyecto Sis\sistema-escolar\resources\views/layouts/app.blade.php ENDPATH**/ ?>

@@ -114,4 +114,7 @@ Route::middleware(['auth'])->group(function () {
             return response()->file(storage_path('app/public/' . $path));
         })->name('expedientes.ver');
     });
+    // Módulo de Asistencias
+    Route::get('/asistencias', [\App\Http\Controllers\AsistenciaController::class, 'index'])->name('asistencias.index');
+    Route::post('/asistencias', [\App\Http\Controllers\AsistenciaController::class, 'store'])->name('asistencias.store');
 });
