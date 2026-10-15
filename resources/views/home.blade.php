@@ -1,252 +1,218 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid py-4 px-4">
-    <!-- Banner de Bienvenida -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
-                <div class="card-body p-4 p-md-5 position-relative">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <span class="badge bg-white bg-opacity-20 text-white px-3 py-2 rounded-pill fw-bold mb-2">
-                                <i class="bi bi-shield-check me-1"></i> Sesión Activa
-                            </span>
-                            <h1 class="fw-bold mb-2 display-6">¡Bienvenido(a), {{ Auth::user()->name }}!</h1>
-                            <p class="mb-0 opacity-85 fs-6">
-                                Panel de administración principal del Sistema Escolar. Controla grupos, matrículas, calificaciones, expedientes y personal educativo desde aquí.
-                            </p>
-                        </div>
-                        <div class="col-md-4 text-md-end mt-3 mt-md-0 d-flex flex-column align-items-md-end justify-content-center">
-                            <div class="bg-white text-primary rounded-4 px-4 py-3 shadow-sm d-inline-block text-start">
-                                <small class="text-uppercase fw-bold text-muted d-block fs-7">Rol Asignado</small>
-                                <span class="fw-bold fs-6 text-dark d-flex align-items-center gap-2">
-                                    <i class="bi bi-person-badge text-primary"></i>
-                                    {{ ucfirst(Auth::user()->getRoleNames()->first() ?? 'Sin Rol') }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<style>
+    /* Tipografía y estilos base */
+    body {
+        background-color: #f8fafc;
+        color: #1e293b;
+    }
+    
+    /* Breadcrumb y encabezado */
+    .breadcrumb-text {
+        font-size: 0.85rem;
+        color: #64748b;
+    }
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 0.25rem;
+    }
+    .page-subtitle {
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+
+    /* Cards de métricas superiores (KPIs) */
+    .card-kpi {
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 1.25rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        height: 100%;
+    }
+    .kpi-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+    .kpi-title {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 0.25rem;
+    }
+    .kpi-value {
+        font-size: 1.65rem;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.1;
+    }
+    .kpi-subtext {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin-top: 0.35rem;
+    }
+
+    /* Widget de alertas de expedientes lateral */
+    .alert-item-red {
+        background-color: #fef2f2;
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 0.65rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    .alert-name {
+        font-weight: 700;
+        font-size: 0.875rem;
+        color: #1e293b;
+        margin-bottom: 0.1rem;
+    }
+    .alert-desc {
+        font-size: 0.775rem;
+        color: #dc3545;
+    }
+
+    /* Tablas estilo Figma */
+    .table-figma th {
+        background-color: #f8fafc;
+        color: #64748b;
+        font-size: 0.75rem;
+        text-transform: capitalize;
+        font-weight: 600;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.75rem 1rem;
+    }
+    .table-figma td {
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.875rem;
+    }
+</style>
+
+<div class="container-fluid px-3 py-2">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-text mb-2">
+        <span>Sistema Escolar</span> <span class="mx-1">/</span> <strong class="text-dark">Dashboard</strong>
     </div>
 
-    <!-- Indicador de Ciclo Activo -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 bg-white border-start border-4 border-success">
-                <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between py-3 px-4 gap-3">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 me-3">
-                            <i class="bi bi-calendar-check-fill fs-3"></i>
-                        </div>
-                        <div>
-                            <span class="text-muted fs-7 text-uppercase fw-bold d-block">Ciclo Escolar Activo</span>
-                            <h4 class="fw-bold mb-0 text-dark font-monospace">
-                                {{ $cicloActivo ? $cicloActivo->nombre : 'Sin ciclo activo registrado' }}
-                            </h4>
-                        </div>
-                    </div>
-                    <div>
-                        @can('ciclos_escolares.mostrar')
-                        <a href="{{ route('ciclos.index') }}" class="btn btn-outline-success rounded-pill px-4 fw-semibold shadow-sm">
-                            <i class="bi bi-arrow-right-circle me-1"></i> Gestionar Ciclos
-                        </a>
-                        @endcan
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Título de Bienvenido -->
+    <div class="mb-4">
+        <h2 class="page-title">Bienvenido, {{ Auth::user()->name }}</h2>
+        <p class="page-subtitle mb-0">Resumen general del estado escolar para el ciclo lectivo vigente.</p>
     </div>
 
-    <!-- Tarjetas de Métricas / KPIs -->
+    <!-- 1. Grid Superior: 4 Métricas Clave -->
     <div class="row g-3 mb-4">
-        <!-- Tarjeta Alumnos -->
-        @can('alumnos.mostrar')
+        <!-- Total Alumnos -->
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-primary">
-                <div class="card-body p-4 d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Alumnos</span>
-                        <h2 class="fw-bold mb-0 text-dark">{{ $totalAlumnos ?? 0 }}</h2>
-                    </div>
-                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3">
-                        <i class="bi bi-people-fill fs-2"></i>
-                    </div>
+            <div class="card-kpi d-flex align-items-center gap-3">
+                <div class="kpi-icon bg-primary bg-opacity-10 text-primary">
+                    <i class="bi bi-people"></i>
                 </div>
-            </div>
-        </div>
-        @endcan
-
-        <!-- Tarjeta Grupos -->
-        @can('grupos.mostrar')
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-info">
-                <div class="card-body p-4 d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Grupos</span>
-                        <h2 class="fw-bold mb-0 text-dark">{{ $totalGrupos ?? 0 }}</h2>
-                    </div>
-                    <div class="bg-info bg-opacity-10 text-info rounded-circle p-3">
-                        <i class="bi bi-diagram-3-fill fs-2"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endcan
-
-        <!-- Tarjeta Alertas Expedientes Incompletos -->
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-danger">
-                <div class="card-body p-4 d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Expedientes Pendientes</span>
-                        <h2 class="fw-bold mb-0 text-danger">{{ $expedientesIncompletosCount ?? 0 }}</h2>
-                        <a href="{{ route('expedientes.index') }}" class="small text-danger fw-semibold text-decoration-none">
-                            Ver Expedientes <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                    <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-3">
-                        <i class="bi bi-folder-x fs-2"></i>
-                    </div>
+                <div>
+                    <div class="kpi-title">Total Alumnos</div>
+                    <div class="kpi-value">{{ $totalAlumnos ?? 0 }}</div>
+                    <div class="kpi-subtext text-success">+3.2% este mes</div>
                 </div>
             </div>
         </div>
 
-        <!-- Tarjeta Acceso a Calificaciones -->
+        <!-- Docentes Activos (Desde la tabla Users) -->
         <div class="col-12 col-sm-6 col-xl-3">
-            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white border-start border-4 border-success">
-                <div class="card-body p-4 d-flex align-items-center justify-content-between">
-                    <div>
-                        <span class="text-muted fs-7 text-uppercase fw-bold d-block mb-1">Calificaciones</span>
-                        <a href="{{ route('calificaciones.index') }}" class="btn btn-sm btn-success rounded-pill px-3 fw-semibold mt-1">
-                            Capturar <i class="bi bi-award-fill ms-1"></i>
-                        </a>
-                    </div>
-                    <div class="bg-success bg-opacity-10 text-success rounded-circle p-3">
-                        <i class="bi bi-journal-check fs-2"></i>
-                    </div>
+            <div class="card-kpi d-flex align-items-center gap-3">
+                <div class="kpi-icon bg-success bg-opacity-10 text-success">
+                    <i class="bi bi-mortarboard"></i>
+                </div>
+                <div>
+                    <div class="kpi-title">Docentes Activos</div>
+                    <div class="kpi-value">{{ $totalDocentes ?? 0 }}</div>
+                    <div class="kpi-subtext">Docentes registrados</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grupos Activos -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card-kpi d-flex align-items-center gap-3">
+                <div class="kpi-icon bg-warning bg-opacity-10 text-warning">
+                    <i class="bi bi-person-lines-fill"></i>
+                </div>
+                <div>
+                    <div class="kpi-title">Grupos Activos</div>
+                    <div class="kpi-value">{{ $totalGrupos ?? 0 }}</div>
+                    <div class="kpi-subtext text-primary">Grupos registrados</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ciclo Actual -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card-kpi d-flex align-items-center gap-3">
+                <div class="kpi-icon bg-secondary bg-opacity-10 text-dark">
+                    <i class="bi bi-calendar-event"></i>
+                </div>
+                <div>
+                    <div class="kpi-title">Ciclo Actual</div>
+                    <div class="kpi-value fs-5">{{ $cicloActivo ? ($cicloActivo->nombre ?? $cicloActivo->ciclo) : 'Sin Activo' }}</div>
+                    <div class="kpi-subtext">Fase de Evaluación</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Alertas de Expedientes Incompletos (Resumen) -->
-    @if(isset($expedientesIncompletos) && count($expedientesIncompletos) > 0)
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden border-start border-4 border-danger">
-                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
-                    <h6 class="fw-bold mb-0 text-danger d-flex align-items-center gap-2">
-                        <i class="bi bi-exclamation-triangle-fill"></i> Alerta de Control Escolar: Alumnos con Documentación Pendiente
-                    </h6>
-                    <a href="{{ route('expedientes.index') }}" class="btn btn-sm btn-danger rounded-pill px-3 fw-bold">Atender Todos</a>
+    <!-- 2. Bloque Principal: Últimos Grupos / Registros (Izquierda) + Alertas de Expedientes (Derecha) -->
+    <div class="row g-4">
+        <!-- Tabla de Últimos Grupos (Columna Izquierda 8/12) -->
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom-0">
+                    <h5 class="fw-bold mb-0 text-dark fs-6">Grupos Recientes</h5>
+                    <a href="{{ route('grupos.index') }}" class="text-primary text-decoration-none fw-semibold small">Ver Todos</a>
                 </div>
                 <div class="table-responsive">
-                    <table class="table align-middle table-hover mb-0">
-                        <thead class="bg-light text-muted small text-uppercase fw-bold">
+                    <table class="table table-figma align-middle mb-0">
+                        <thead>
                             <tr>
-                                <th class="ps-4 py-3">ALUMNO</th>
-                                <th class="py-3">GRADO / GRUPO</th>
-                                <th class="py-3">DOCUMENTOS PENDIENTES</th>
-                                <th class="text-end pe-4 py-3">ACCIONES</th>
+                                <th>Nombre Grupo / Grado</th>
+                                <th>Ciclo Escolar</th>
+                                <th>Docente Titular</th>
+                                <th class="text-end pe-4">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($expedientesIncompletos as $alumnoPendiente)
-                            <tr>
-                                <td class="ps-4">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="fw-bold text-dark">{{ $alumnoPendiente->nombre }} {{ $alumnoPendiente->apellido_p }}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1 rounded-2">
-                                        {{ $alumnoPendiente->grado->nombre ?? '' }} {{ $alumnoPendiente->grupo->grupo ?? '' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-3 py-1 rounded-pill fw-semibold">
-                                        <i class="bi bi-file-earmark-x me-1"></i> Expediente Incompleto
-                                    </span>
-                                </td>
-                                <td class="text-end pe-4">
-                                    <a href="{{ route('expedientes.show', $alumnoPendiente->id_alumno) }}" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-bold">
-                                        <i class="bi bi-upload me-1"></i> Subir Documentos
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    <!-- Sección de Últimos Grupos -->
-    @can('grupos.mostrar')
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
-                <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
-                    <h6 class="fw-bold mb-0 text-secondary"><i class="bi bi-clock-history me-2"></i>Últimos Grupos Registrados</h6>
-                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light rounded-pill px-3 fw-semibold border">Ver Todos</a>
-                </div>
-                <div class="table-responsive">
-                    <table class="table align-middle table-hover mb-0">
-                        <thead class="bg-light text-muted small text-uppercase fw-bold">
-                            <tr>
-                                <th class="ps-4 py-3">GRUPO / GRADO</th>
-                                <th class="py-3">CICLO ESCOLAR</th>
-                                <th class="py-3">DOCENTE TITULAR</th>
-                                <th class="text-end pe-4 py-3">ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody class="border-top-0">
                             @forelse($ultimosGrupos ?? [] as $grupo)
                             <tr>
-                                <td class="ps-4">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold fs-7" style="width: 34px; height: 34px;">
-                                            <i class="bi bi-diagram-3"></i>
-                                        </div>
-                                        <span class="fw-bold text-dark fs-6">
-                                            {{ $grupo->grado->nombre ?? $grupo->grado }} - {{ $grupo->nombre ?? $grupo->grupo }}
-                                        </span>
-                                    </div>
+                                <td class="fw-semibold text-dark">
+                                    {{ $grupo->grado->nombre ?? $grupo->grado ?? 'Grupo' }} - {{ $grupo->grupo ?? $grupo->nombre ?? '' }}
                                 </td>
                                 <td>
-                                    <span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1.5 rounded-pill font-monospace">
-                                        {{ $grupo->ciclo->nombre ?? 'N/A' }}
+                                    <span class="badge bg-light text-dark border fw-normal">
+                                        {{ $grupo->ciclo->nombre ?? $grupo->ciclo ?? 'N/A' }}
                                     </span>
                                 </td>
-                                <td>
-                                    @if($grupo->docenteTitular)
-                                        <span class="fw-semibold text-dark"><i class="bi bi-person me-1 text-muted"></i>{{ $grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre }}</span>
-                                    @else
-                                        <span class="badge bg-light text-muted border px-2.5 py-1 rounded-2">Sin Asignar</span>
-                                    @endif
+                                <td class="text-secondary">
+                                    {{ $grupo->docenteTitular->name ?? $grupo->docenteTitular->nombre ?? 'Sin Asignar' }}
                                 </td>
                                 <td class="text-end pe-4">
-                                    <div class="btn-group gap-1">
-                                        <a href="{{ route('calificaciones.index', ['id_grupo' => $grupo->id_grupo]) }}" class="btn btn-sm btn-light text-success rounded-circle border shadow-sm" title="Capturar Calificaciones">
-                                            <i class="bi bi-award-fill"></i>
-                                        </a>
-                                        <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-light text-primary rounded-circle border shadow-sm" title="Ver Detalle">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
-                                    </div>
+                                    <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        Ver
+                                    </a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-5">
-                                    <i class="bi bi-inbox fs-1 text-secondary opacity-50 d-block mb-2"></i>
-                                    No hay grupos registrados recientemente.
-                                </td>
+                                <td colspan="4" class="text-center text-muted py-4">No hay grupos registrados recientemente.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -254,13 +220,41 @@
                 </div>
             </div>
         </div>
-    </div>
-    @endcan
-</div>
 
-<style>
-    .fs-7 {
-        font-size: 0.8rem;
-    }
-</style>
+        <!-- Alertas de Expedientes Incompletos (Columna Derecha 4/12) -->
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="fw-bold mb-0 text-dark fs-6">Alertas de Expedientes</h5>
+                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2.5 py-1 fw-bold fs-7">
+                        {{ $expedientesIncompletosCount ?? 0 }} Pendientes
+                    </span>
+                </div>
+
+                <!-- Lista Dinámica de Alertas -->
+                @forelse($expedientesIncompletos ?? [] as $alumnoAlert)
+                <div class="alert-item-red">
+                    <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
+                    <div class="w-100">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="alert-name">{{ $alumnoAlert->nombre }} {{ $alumnoAlert->apellido_p }}</div>
+                            <a href="{{ route('expedientes.show', $alumnoAlert->id_alumno) }}" class="text-danger small fw-bold">
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                        <div class="alert-desc">Expediente Incompleto ({{ $alumnoAlert->documentos_count ?? 0 }}/4 documentos)</div>
+                    </div>
+                </div>
+                @empty
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-check-circle fs-2 text-success opacity-50 d-block mb-1"></i>
+                    No hay expedientes pendientes.
+                </div>
+                @endforelse
+
+            </div>
+        </div>
+    </div>
+
+</div>
 @endsection

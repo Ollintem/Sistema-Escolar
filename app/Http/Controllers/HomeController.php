@@ -20,7 +20,17 @@ class HomeController extends Controller
         // 1. Conteos principales
         $totalAlumnos = Alumno::count();
         $totalGrupos = Grupo::count();
-        $totalDocentes = User::role('Docente')->count(); // Conteo vía roles Spatie
+
+        // Conteo directo por la columna 'role' de la tabla users (o via Spatie fallback)
+        $totalDocentes = User::where('role', 'docente')
+            ->orWhere('role', 'Docente')
+            ->count();
+
+        // Si no obtiene resultados por columna 'role', intenta con Spatie como respaldo:
+        if ($totalDocentes === 0 && method_exists(User::class, 'scopeRole')) {
+            $totalDocentes = User::role('Docente')->count();
+        }
+
         $cicloActivo = CicloEscolar::where('estado', 'Activo')->latest('id_ciclo')->first();
 
         // 2. Últimos grupos registrados

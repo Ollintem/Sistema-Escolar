@@ -117,4 +117,8 @@ Route::middleware(['auth'])->group(function () {
     // Módulo de Asistencias
     Route::get('/asistencias', [\App\Http\Controllers\AsistenciaController::class, 'index'])->name('asistencias.index');
     Route::post('/asistencias', [\App\Http\Controllers\AsistenciaController::class, 'store'])->name('asistencias.store');
+
+    // Módulo Boletas y Reportes
+    Route::get('/boletas', [\App\Http\Controllers\BoletaController::class, 'index'])->name('boletas.index');
+    Route::get('/boletas/pdf/{alumnoId}', [\App\Http\Controllers\BoletaController::class, 'descargarPdf'])->name('boletas.pdf');
 });

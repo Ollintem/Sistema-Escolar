@@ -31,9 +31,11 @@ class PersonalController extends Controller
             'especialidad' => 'nullable|string|max:255',
         ]);
 
+        // Guardar tanto en la columna nativa 'role' como en Spatie
         $user = User::create([
             'name'         => $request->name,
             'email'        => $request->email,
+            'role'         => strtolower($request->role), // <-- Sincroniza la columna nativa de la BD
             'password'     => Hash::make($request->password),
             'telefono'     => $request->telefono,
             'especialidad' => $request->especialidad,
@@ -61,6 +63,7 @@ class PersonalController extends Controller
         $data = [
             'name'         => $request->name,
             'email'        => $request->email,
+            'role'         => strtolower($request->role), // <-- ACTUALIZA LA COLUMNA NATIVA EN 'users'
             'telefono'     => $request->telefono,
             'especialidad' => $request->especialidad,
         ];
@@ -69,7 +72,10 @@ class PersonalController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
+        // 1. Actualizar datos de la tabla 'users'
         $user->update($data);
+
+        // 2. Sincronizar rol de Spatie
         $user->syncRoles([$request->role]);
 
         return back()->with('success', 'Empleado actualizado correctamente.');
@@ -110,7 +116,6 @@ class PersonalController extends Controller
     // Matriz de Permisos adaptada al Sistema Escolar
     public function permisos(Role $role)
     {
-        // Módulos exactos de la barra lateral de tu sistema
         $modulos = [
             'dashboard'        => 'DASHBOARD',
             'ciclos_escolares' => 'CICLOS ESCOLARES',
@@ -124,7 +129,6 @@ class PersonalController extends Controller
 
         $acciones = ['mostrar', 'crear', 'editar', 'eliminar', 'gestionar'];
 
-        // Arreglo de nombres de permisos que el rol tiene asignados
         $rolePermisos = $role->permissions->pluck('name')->toArray();
 
         return view('personal.permisos', compact('role', 'modulos', 'acciones', 'rolePermisos'));
